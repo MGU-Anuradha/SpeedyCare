@@ -6,7 +6,7 @@
 	String dbUrl = "jdbc:mysql://51.132.137.223:3306/isec_assessment2";
 	String dbUser = "isec";
 	String dbPassword = "EUHHaYAmtzbv";
-	ResultSet pastResultSet = null;
+	//ResultSet pastResultSet = null;
 	ResultSet futureResultSet = null;
 	
 	try{
