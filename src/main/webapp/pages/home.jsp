@@ -43,7 +43,13 @@
 	    String vehicleRegistrationNumber = request.getParameter("vehicleRegistrationNumber");
 	    String currentMileage = request.getParameter("currentMileage");
 	    String message = request.getParameter("message");
-	    
+	   
+		System.out.println("Username: " + userName);
+	    System.out.println("location: " + preferredLocation);
+	    System.out.println("Mileage: " + currentMileage);
+	    System.out.println("Message: " + message);
+	    System.out.println("Vehicle No: " + vehicleRegistrationNumber);
+
 	    // Convert mileage to an integer
         int mileage = Integer.parseInt(currentMileage);
 	 	
