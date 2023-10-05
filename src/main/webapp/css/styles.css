@@ -1,0 +1,30 @@
+@charset "ISO-8859-1";
+
+
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    /*background image properties*/
+    background-image: url('../images/background.png');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;   
+}
+
+.container {
+	height: 300px;
+	padding-top: 30px;
+ 	margin-top: 150px;
+    color: rgb(255, 255, 255);
+    border-radius: 12px;
+    background-color: rgba(0, 0, 0, 0.5); 
+}
+

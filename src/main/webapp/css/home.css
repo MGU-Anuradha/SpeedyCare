@@ -1,0 +1,38 @@
+/* Center the form content vertically and horizontally */
+.form-container {
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+    box-sizing: border-box;
+    background-image: url('../images/background1.png'); /* Specify the path to your image */
+    background-size: cover; /* Cover the entire container with the background image */
+    background-repeat: no-repeat; /* Do not repeat the background image */
+}
+
+h2 {
+    font-family: 'Sofia Sans Condensed', sans-serif;
+}
+
+/* Style the form */
+#reserveForm {
+    max-width: 400px;
+    width: 100%;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
+}
+
+/* Style form elements */
+#reserveForm .mb-3 {
+    margin-bottom: 15px;
+   font-family: 'Roboto Condensed', sans-serif;
+}
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+

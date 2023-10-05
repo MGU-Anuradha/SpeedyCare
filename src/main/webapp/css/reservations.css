@@ -1,0 +1,51 @@
+@charset "ISO-8859-1";
+
+/* table.css */
+body {
+	background-color: rgb(128, 128, 128);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+h2 {
+    font-family: 'Sofia Sans Condensed', sans-serif;
+}
+/* Style the table header */
+.table thead th {
+	font-family: 'Lato', sans-serif;
+	
+    background-color: rgb(0, 0, 0); /* Dark background color for header */
+    color: rgb(255, 255, 255); /* Text color for header */
+}
+
+/* Style table rows */
+.table tbody tr:nth-child(even) {
+    background-color: #f2f2f2; /* Light background color for even rows */
+}
+
+/* Hover effect for table rows */
+.table tbody tr:hover {
+    background-color: #cce5ff; /* Background color on hover */
+}
+
+/* Style the table cells */
+.table tbody td, .table thead th {
+    border: 1px solid #dee2e6; /* Border for cells */
+    padding: 10px; /* Padding inside cells */
+}
+
+/* Center text in table cells */
+.table tbody td, .table thead th {
+    text-align: center;
+}
+/* footer.css */
+footer {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 0;
+}
+
+footer p {
+    text-align: center;
+    margin: 0;
+}
+
