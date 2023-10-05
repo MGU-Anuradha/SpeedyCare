@@ -54,7 +54,7 @@
         Time time = null;
         try {
 	        // Check if the preferredTime matches the expected format "hh:mm"
-	        if (preferredTime.matches("^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$")) {
+	        if (preferredTime != null && preferredTime.matches("^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$")) {
 	            // If it matches, add ":00" to the end of the string to match SQL TIME format
 	            preferredTime += ":00";
 	            // Create a Time object
@@ -206,11 +206,11 @@
                 </div>
                 <div class="mb-3">
                     <label for="pickupDate" class="form-label">Reservation Date *</label>
-                    <input type="date" class="form-control" id="pickupDate" name="pickupDate" value="pickupDate" required>
+                    <input type="date" class="form-control" id="pickupDate" name="pickupDate"  required>
                 </div>
                 <div class="mb-3">
                     <label for="preferredTime" class="form-label">Preferred Time *</label>
-                    <select class="form-select" id="preferredTime" required>
+                    <select class="form-select" id="preferredTime" name="preferredTime" required>
                         <option value="10AM">10 AM</option>
                         <option value="11AM">11 AM</option>
                         <option value="12PM">12 PM</option>
