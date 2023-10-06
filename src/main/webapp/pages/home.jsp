@@ -6,53 +6,42 @@
 	String dbUrl = "jdbc:mysql://51.132.137.223:3306/isec_assessment2";
 	String dbUser = "isec";
 	String dbPassword = "EUHHaYAmtzbv";
-	//ResultSet pastResultSet = null;
-	ResultSet futureResultSet = null;
+	ResultSet pastReservations = null;
+	ResultSet futureReservations = null;
+
 	
 	try{
-		//Load MySQL JDBC driver
-		Class.forName("com.mysql.cj.jdbc.Driver"); 
+		//when submit the form - Create Reservation-----------------------------------------------------
+		if (request.getParameter("submit") != null){
+			
+			// Retrieve form data-----------------------	    	
+		    String userName = request.getParameter("usernameField");
+		    String reservationDate = request.getParameter("pickupDate");
+		    String preferredTime = request.getParameter("preferredTime");
+		 	String preferredLocation = request.getParameter("preferredLocation");
+		    String vehicleRegistrationNumber = request.getParameter("vehicleRegistrationNumber");
+		    String currentMileage = request.getParameter("currentMileage");
+		    String message = request.getParameter("message");
+		   
+			/*
+		    System.out.println("Username: " + userName);
+		    System.out.println("location: " + preferredLocation);
+		    System.out.println("Mileage: " + currentMileage);
+		    System.out.println("Message: " + message);
+		    System.out.println("Vehicle No: " + vehicleRegistrationNumber);
+		    */
+		    
+		  //Insert data to the database------------------------ 
+		    
+	}catch{
 		
-		//Database connection
-		Connection conn = DriverManager.getConnection(dbUrl,dbUser,dbPassword);
-		
-		// Set the parameter value (username)
-	    String username = "SpeedyCare";
-		 
-	}catch (ClassNotFoundException e) {
-		e.printStackTrace();
-	} catch (SQLException e) {
-		e.printStackTrace();
 	}
-
 	
+try{
 	
-	
-	//Create Reservation-----------------------------------------------------
-	if (request.getParameter("submit") != null){
-		
-		// Retrieve form data-----------------------
-	    //String name = request.getParameter("name");
-	    //String email = request.getParameter("email");
-	    //String contactNumber = request.getParameter("contactNumber");
-	    	
-	    String userName = request.getParameter("usernameField");
-	    String reservationDate = request.getParameter("pickupDate");
-	    String preferredTime = request.getParameter("preferredTime");
-	 	String preferredLocation = request.getParameter("preferredLocation");
-	    String vehicleRegistrationNumber = request.getParameter("vehicleRegistrationNumber");
-	    String currentMileage = request.getParameter("currentMileage");
-	    String message = request.getParameter("message");
-	   
-		System.out.println("Username: " + userName);
-	    System.out.println("location: " + preferredLocation);
-	    System.out.println("Mileage: " + currentMileage);
-	    System.out.println("Message: " + message);
-	    System.out.println("Vehicle No: " + vehicleRegistrationNumber);
-
-	    // Convert mileage to an integer
-        int mileage = Integer.parseInt(currentMileage);
-	 	
+	    
+	    //Insert data to the database------------------------ 
+	    int mileage = Integer.parseInt(currentMileage); // Convert mileage to an integer
 	 	//Parse a date string into a Date object 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date = dateFormat.parse(reservationDate);
@@ -77,7 +66,7 @@
 	        out.println("Parsed Time: " + time);
 	    }
         
-        //Insert Data --------------------------------
+
        try{
 	     	// Load the MySQL JDBC driver
 	        Class.forName("com.mysql.cj.jdbc.Driver");
@@ -86,7 +75,7 @@
 	        Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 	        
 	     	// Create a SQL INSERT statement
-	        String insertSql = "INSERT INTO vehicle_service (date, time, location, mileage, vehicle_no, message,username) VALUES (?, ?, ?, ?, ?, ?, )";
+	        String insertSql = "INSERT INTO vehicle_service (date, time, location, mileage, vehicle_no, message,username) VALUES (?, ?, ?, ?, ?, ?, ?)";
 	       
 	        // Create a PreparedStatement
 	        PreparedStatement preparedStatement = conn.prepareStatement(insertSql);
@@ -134,7 +123,9 @@
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa+Ink:wght@700&family=Merriweather:wght@900&family=Noto+Sans:wght@100&family=Roboto+Condensed&family=Roboto+Slab:wght@300;500&family=Sofia+Sans+Condensed:wght@500&display=swap" rel="stylesheet">
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/home.css">
+	<!-- link rel="stylesheet" href="${pageContext.request.contextPath}/css/home.css"-->
+	<link rel="stylesheet" href="css/home.css">
+	<link rel="stylesheet" href="css/reservations.css">
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	
 	
@@ -175,6 +166,10 @@
                     document.getElementById('usernameField').value = username;
                 });
                 
+                //Store the username in a session attribute
+                session.setAttribute("username", username);
+             	console.log(session.getAttribute('username'));    
+                
             })
             .fail(function (jqXHR, textStatus, errorThrown) {
                 // Handle any errors here
@@ -201,10 +196,11 @@
         <div class="container my-5 d-flex flex-column align-items-center">
             <h2>Reserve Your Spot Now</h2>
 
-            <!-- View Button -->
+            <!-- View Buttons -->
             <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#viewReservationModal" id="viewReservationBtn">View Reservations</button>
+            <!-- button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#viewReservationModal" id="viewReservationBtn">View Reservations</button>-->
+            
 
-            <!-- Reservation Form -->
             <form method="post" id="reserveForm" name="reserveForm">
                 <div class="mb-3">
                     <label for="vehicleRegistrationNumber" class="form-label">Vehicle Number *</label>
@@ -255,6 +251,94 @@
             window.location.href = 'reservations.jsp';
         });
     </script>
+    <!-- End Reservation form -->
+    
+    
+    
+       
+    <!-- View Future Reservations Modal -->
+    <div class="container my-5 text-center">
+        <h2>Discover Your Journey</h2>
+            
+        <table class="table">
+		  <thead class="thead-dark">
+		    <tr>
+			    <th>Booking ID</th>
+	            <th>Date</th>
+	            <th>Time</th>
+	            <th>Location</th>
+	            <th>Mileage</th>
+	            <th>Vehicle Number</th>
+	            <th>Message</th>
+		    </tr>
+
+			<%
+				Date currentDate = new Date(); 
+			
+				if (futureReservations != null) {
+			           while (futureReservations.next()) {
+			           	
+			           		Date date = futureReservations.getDate("date");
+			            	
+			           		if(date.before(currentDate)){
+			           		 	continue;
+			           		}
+			           		
+			                int bookingId = futureReservations.getInt("booking_id");
+			                Time time = futureReservations.getTime("time");
+			                String location = futureReservations.getString("location");
+			                int mileage = futureReservations.getInt("mileage");
+			                String vehicleNo = futureReservations.getString("vehicle_no");
+			                String message = futureReservations.getString("message");    
+			%>
+			
+	       <tr>
+	            <td><%= bookingId %></td>
+	            <td><%= date %></td>
+	            <td><%= time %></td>
+	            <td><%= location %></td>
+	            <td><%= mileage %></td>
+	            <td><%= vehicleNo %></td>
+	            <td><%= message %></td>
+	        </tr>
+       	    <% 
+      			}}
+    		%>
+		   </thead>
+		</table>
+    </div> 
+    
+    
+    
+    
+        	        <div class="container my-5 text-center">
+	        <h2 >Discover Your Journey</h2>
+			<table class="table">
+	  <thead class="thead-dark">
+	    <tr>
+	      <th scope="col">Booking ID</th>
+	      <th scope="col">Date</th>
+	      <th scope="col">Time</th>
+	      <th scope="col">Location</th>
+	      <th scope="col">Vehicle No</th>
+	      <th scope="col">Mileage</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	    <tr>
+	      <td>1</td>
+	      <td>Mark</td>
+	      <td>Otto</td>
+	      <td>@mdo</td>
+	      <td>@mdo</td>
+	      <td>@mdo</td>
+	    </tr>
+	  </tbody>
+	</table>
+	
+
+    </div>
+    
     
 
     <!-- Bootstrap JS from CDN -->
