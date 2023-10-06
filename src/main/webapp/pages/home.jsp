@@ -1,7 +1,9 @@
 <%@ page import="java.sql.*, java.util.Date" %>
 <%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="com.services.jsp.*" %>
 
 <%
+	ServiceDAO service = new ServiceDAO();
 	//Database connection parameters
 	String dbUrl = "jdbc:mysql://51.132.137.223:3306/isec_assessment2";
 	String dbUser = "isec";
@@ -31,84 +33,27 @@
 		    System.out.println("Vehicle No: " + vehicleRegistrationNumber);
 		    */
 		    
-		  //Insert data to the database------------------------ 
-		    
-	}catch{
-		
-	}
-	
-try{
-	
-	    
-	    //Insert data to the database------------------------ 
-	    int mileage = Integer.parseInt(currentMileage); // Convert mileage to an integer
-	 	//Parse a date string into a Date object 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = dateFormat.parse(reservationDate);
-        
-        Time time = null;
-        try {
-	        // Check if the preferredTime matches the expected format "hh:mm"
-	        if (preferredTime != null && preferredTime.matches("^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$")) {
-	            // If it matches, add ":00" to the end of the string to match SQL TIME format
-	            preferredTime += ":00";
-	            // Create a Time object
-	            time = Time.valueOf(preferredTime);
-	        } else {
-	            // Handle invalid time format
-	            out.println("Invalid time format. Please enter time in hh:mm format.");
-	        }
-	    } catch (IllegalArgumentException e) {
-	        out.println("Error parsing time: " + e.getMessage());
-	    }
-        if (time != null) {
-	        // Time object is valid, you can use it
-	        out.println("Parsed Time: " + time);
-	    }
-        
-
-       try{
-	     	// Load the MySQL JDBC driver
-	        Class.forName("com.mysql.cj.jdbc.Driver");
-	        
-	        // Establish a database connection
-	        Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-	        
-	     	// Create a SQL INSERT statement
-	        String insertSql = "INSERT INTO vehicle_service (date, time, location, mileage, vehicle_no, message,username) VALUES (?, ?, ?, ?, ?, ?, ?)";
+		   //Insert data to the database------------------------ 
+		   int rowsAdded = service.addReservation (preferredLocation,currentMileage,vehicleRegistrationNumber,message,userName,reservationDate,preferredTime );
 	       
-	        // Create a PreparedStatement
-	        PreparedStatement preparedStatement = conn.prepareStatement(insertSql);
-	        
-	     	// Set the parameter values
-           	preparedStatement.setDate(1, new java.sql.Date(date.getTime())); // Current date
-            preparedStatement.setTime(2, time); // Current time
-            preparedStatement.setString(3, preferredLocation);
-            preparedStatement.setInt(4, mileage);
-            preparedStatement.setString(5, vehicleRegistrationNumber);
-            preparedStatement.setString(6, message);
-            preparedStatement.setString(7, userName);
-	        
-	        // Execute the INSERT statement
-	        int AddedRows = preparedStatement.executeUpdate();
-	        
-	     	// Check if the insertion was successful
-	        if (AddedRows > 0) {
-	        	out.println("Data inserted successfully.");
-	            response.sendRedirect(request.getRequestURI());  
-	        } else {
-	            out.println("Failed to insert data.");
-	        }
-	     	
-	    	// Close the database connection
-	        conn.close(); 
-       }
-       catch (ClassNotFoundException e) {
-           e.printStackTrace();
-       } catch (SQLException e) {
-           e.printStackTrace();
-       }
+		   if (rowsAdded > 0) {
+		          out.println("Data inserted successfully.");
+		          response.sendRedirect(request.getRequestURI());  
+	       }else if(rowsAdded == -1){
+	        	 out.println("Invalid time format. Please enter time in hh:mm format.");
+	       }else if(rowsAdded == -2){
+	        	 out.println("Error parsing time");
+	       } 
+		   
+	   }/*else {
+      	 out.println("Failed to insert data.");
+       }*/
+	         
+		   
+	}catch (ClassNotFoundException e) {
+		e.printStackTrace();		
 	}
+	
 %>
 
 
@@ -239,18 +184,6 @@ try{
             </form>
         </div>
     </div>
-
-    <!-- View Button calling -->
-    <script>
-        // Get the button element by its id
-        const viewReservationBtn = document.getElementById('viewReservationBtn');
-
-        // Add a click event listener to the button
-        viewReservationBtn.addEventListener('click', function () {
-            // Navigate to the table.js page when the button is clicked
-            window.location.href = 'reservations.jsp';
-        });
-    </script>
     <!-- End Reservation form -->
     
     
@@ -272,38 +205,7 @@ try{
 	            <th>Message</th>
 		    </tr>
 
-			<%
-				Date currentDate = new Date(); 
-			
-				if (futureReservations != null) {
-			           while (futureReservations.next()) {
-			           	
-			           		Date date = futureReservations.getDate("date");
-			            	
-			           		if(date.before(currentDate)){
-			           		 	continue;
-			           		}
-			           		
-			                int bookingId = futureReservations.getInt("booking_id");
-			                Time time = futureReservations.getTime("time");
-			                String location = futureReservations.getString("location");
-			                int mileage = futureReservations.getInt("mileage");
-			                String vehicleNo = futureReservations.getString("vehicle_no");
-			                String message = futureReservations.getString("message");    
-			%>
-			
-	       <tr>
-	            <td><%= bookingId %></td>
-	            <td><%= date %></td>
-	            <td><%= time %></td>
-	            <td><%= location %></td>
-	            <td><%= mileage %></td>
-	            <td><%= vehicleNo %></td>
-	            <td><%= message %></td>
-	        </tr>
-       	    <% 
-      			}}
-    		%>
+
 		   </thead>
 		</table>
     </div> 
