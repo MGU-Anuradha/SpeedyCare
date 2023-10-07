@@ -159,4 +159,40 @@ public class ServiceDAO {
 		
 		return pastReservations;
 	}
+	
+	
+	
+	public int deleteReservations(int bookingId) throws ClassNotFoundException {
+    	PreparedStatement preparedStatement = null;
+
+    	try {
+    		// Load the MySQL JDBC driver
+    		Class.forName("com.mysql.cj.jdbc.Driver");
+		    
+    		// Establish a database connection
+    		Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+    			  
+    	   
+    	    // Create a SQL DELETE query
+    	    String deleteSql = "DELETE FROM vehicle_service WHERE booking_id = ?";
+
+    	    // Create a PreparedStatement
+    	    preparedStatement = conn.prepareStatement(deleteSql);
+
+    	    // Set the parameter value (booking id)
+    	    preparedStatement.setInt(1, bookingId);
+
+    	    // Execute the DELETE query
+    	    int rowsAffected = preparedStatement.executeUpdate();
+    	        	    
+    	    // Check the number of rows affected to determine if the delete was successful
+    	    conn.close();
+    	    
+    	    return rowsAffected;
+    	    
+    	}catch (SQLException e) {
+    	    e.printStackTrace();
+    	    return -1;
+    	} 
+    }
 }
