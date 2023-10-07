@@ -13,7 +13,7 @@
 
 	
 	try{
-		//when submit the form - Create Reservation-----------------------------------------------------
+		//when Submit Reservation button clicked -----------------------------------------------------
 		if (request.getParameter("submit") != null){
 			
 			// Retrieve form data-----------------------	    	
@@ -25,13 +25,13 @@
 		    String currentMileage = request.getParameter("currentMileage");
 		    String message = request.getParameter("message");
 		   
-			/*
+			
 		    System.out.println("Username: " + userName);
 		    System.out.println("location: " + preferredLocation);
 		    System.out.println("Mileage: " + currentMileage);
 		    System.out.println("Message: " + message);
 		    System.out.println("Vehicle No: " + vehicleRegistrationNumber);
-		    */
+		    
 		    
 		   //Insert data to the database------------------------ 
 		   int rowsAdded = service.addReservation (preferredLocation,currentMileage,vehicleRegistrationNumber,message,userName,reservationDate,preferredTime );
@@ -48,7 +48,12 @@
 	   }/*else {
       	 out.println("Failed to insert data.");
        }*/
-	         
+		
+		
+		
+		
+		//when View Future Reservations button clicked -----------------------------------------------------
+	        
 		   
 	}catch (ClassNotFoundException e) {
 		e.printStackTrace();		
@@ -70,7 +75,7 @@
 	<link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa+Ink:wght@700&family=Merriweather:wght@900&family=Noto+Sans:wght@100&family=Roboto+Condensed&family=Roboto+Slab:wght@300;500&family=Sofia+Sans+Condensed:wght@500&display=swap" rel="stylesheet">
 	<!-- link rel="stylesheet" href="${pageContext.request.contextPath}/css/home.css"-->
 	<link rel="stylesheet" href="css/home.css">
-	<link rel="stylesheet" href="css/reservations.css">
+
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	
 	
