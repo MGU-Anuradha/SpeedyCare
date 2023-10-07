@@ -30,8 +30,7 @@ public class ServiceDAO {
     }
 
     // Method to add a reservation to the database
-    public int addReservation(String location, String mileage, String vehicleNumber, String message, String userName,
-            String reservationDate, String preferredTime) throws ClassNotFoundException, SQLException {
+    public int addReservation(String location, String mileage, String vehicleNumber, String message, String userName, String reservationDate, String preferredTime) throws ClassNotFoundException, SQLException {
         Connection connection = null;
         try {
             connection = getConnection();
@@ -89,16 +88,20 @@ public class ServiceDAO {
             int rowsAffected = preparedStatement.executeUpdate();
             preparedStatement.close();
 
+            closeConnection(connection);
             return rowsAffected;
 
-        } finally {
-            closeConnection(connection);
+        }catch (SQLException e) {
+            e.printStackTrace();
+            
+            return -1;
         }
     }
 
     // Method to retrieve future reservations for a user
     public ResultSet displayFutureReservations(String userName) throws ClassNotFoundException, SQLException {
         Connection connection = null;
+        ResultSet futureReservations = null;
         try {
             connection = getConnection();
 
@@ -112,15 +115,18 @@ public class ServiceDAO {
             preparedStatement.setString(1, userName);
             preparedStatement.setString(2, currentDateTime);
 
-            return preparedStatement.executeQuery();
-        } finally {
-            closeConnection(connection);
-        }
+            futureReservations = preparedStatement.executeQuery();
+            
+        }catch (SQLException e) {
+			e.printStackTrace();
+		}
+        return futureReservations;
     }
 
     // Method to retrieve past reservations for a user
     public ResultSet displayPastReservations(String userName) throws ClassNotFoundException, SQLException {
         Connection connection = null;
+        ResultSet pastReservations = null;
         try {
             connection = getConnection();
 
@@ -134,10 +140,11 @@ public class ServiceDAO {
             preparedStatement.setString(1, userName);
             preparedStatement.setString(2, currentDateTime);
 
-            return preparedStatement.executeQuery();
-        } finally {
-            closeConnection(connection);
-        }
+            pastReservations = preparedStatement.executeQuery();
+        } catch (SQLException e) {
+			e.printStackTrace();	
+		}
+        return pastReservations;
     }
 
     // Method to delete a reservation by ID

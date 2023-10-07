@@ -23,6 +23,13 @@
             String vehicleRegistrationNumber = request.getParameter("vehicleRegistrationNumber");
             String currentMileage = request.getParameter("currentMileage");
             String message = request.getParameter("message");
+            
+            System.out.println("Username: " + userName);
+    	    System.out.println("location: " + preferredLocation);
+    	    System.out.println("Mileage: " + currentMileage);
+    	    System.out.println("Message: " + message);
+    	    System.out.println("Vehicle No: " + vehicleRegistrationNumber);
+
 
             // Insert data to the database------------------------
             int rowsAdded = service.addReservation(preferredLocation, currentMileage, vehicleRegistrationNumber, message, userName, reservationDate, preferredTime);
@@ -48,7 +55,7 @@
             String userName = request.getParameter("usernameField2");
             System.out.println("Hello");
             System.out.println(userName);
-            futureReservations = service.displayFutureReservations(userName);
+            futureReservations = service.displayFutureReservations (userName);
         }
 
         // when View Past Reservations form submitted -----------------------------------------------------
@@ -105,7 +112,7 @@
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/home.css">
 
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>	
-	<script src="${pageContext.request.contextPath}js/script.js"></script>
+	<script src="${pageContext.request.contextPath}/js/script.js"></script>
 </head>
 
 
@@ -144,14 +151,10 @@
                     <label for="pickupDate" class="form-label">Reservation Date *</label>
                     <input type="date" class="form-control" id="pickupDate" name="pickupDate"  required>
                 </div>
-                <div class="mb-3">
-                    <label for="preferredTime" class="form-label">Preferred Time *</label>
-                    <select class="form-select" id="preferredTime" name="preferredTime" required>
-                        <option value="10AM">10 AM</option>
-                        <option value="11AM">11 AM</option>
-                        <option value="12PM">12 PM</option>
-                    </select>
-                </div>
+                <div class="col-md-6 form-group mb-3">
+	                <label for="time" class="col-form-label">Preferred Time * </label><br>
+  					<input type="time" id="preferrdTime" name="preferredTime" required>
+	            </div>
                 <div class="mb-3">
                     <label for="preferredLocation" class="form-label">Location *</label>
                     <input type="text" class="form-control" id="preferredLocation" name="preferredLocation" placeholder="Enter Preferred Location" required>
