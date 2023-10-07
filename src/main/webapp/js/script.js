@@ -1,4 +1,5 @@
 
+
 const introspectUrl = 'https://api.asgardeo.io/t/ushanianu/oauth2/introspect';
 const accessToken = localStorage.getItem('access_token');
 const idToken = localStorage.getItem('id_token');
@@ -51,3 +52,5 @@ if (accessToken && idToken) {
 } else {
     window.location.href = "../index.jsp";
 }
+
+
