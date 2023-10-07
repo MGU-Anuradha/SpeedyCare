@@ -16,6 +16,8 @@ public class ServiceDAO {
 	String dbUser = "isec";
 	String dbPassword = "EUHHaYAmtzbv";
    
+	
+	
 	public int addReservation (String preferredLocation,String currentMileage,String vehicleRegistrationNumber,String message,String userName,String reservationDate,String preferredTime) throws ParseException, ClassNotFoundException{
 		 
 		// Convert mileage to an integer
@@ -81,5 +83,42 @@ public class ServiceDAO {
            
            return -1;
        }
+	}
+	
+	
+	
+	
+	public ResultSet displayFutureReservations(String username)throws ClassNotFoundException, SQLException{
+		
+		ResultSet futureReservations = null;
+		Connection conn = null;
+		
+		try {
+			// Load the MySQL JDBC driver
+		    Class.forName("com.mysql.cj.jdbc.Driver");
+		    
+		    // Establish a database connection
+		    conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+		    
+		    // Create a SQL SELECT query for future reservations
+		    String displayFutureSql = "SELECT * FROM vehicle_service WHERE username = ? AND CONCAT(date, ' ', time) >= ? ORDER BY date, time";
+		    
+		    // Create PreparedStatements for both queries
+		    PreparedStatement futurePreparedStatement = conn.prepareStatement(displayFutureSql);
+		    futurePreparedStatement.setString(1, username);
+		    
+		    // Set the parameter value (current date and time)
+		    SimpleDateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		    String currentDateTime = dateTimeFormat.format(new Date());
+		    futurePreparedStatement.setString(2, currentDateTime);
+		    
+		    // Execute the SELECT queries
+			 futureReservations = futurePreparedStatement.executeQuery();	 
+		
+		}catch (SQLException e) {
+			e.printStackTrace();	
+		}
+		
+		return futureReservations;
 	}
 }
