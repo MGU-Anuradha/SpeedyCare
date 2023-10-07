@@ -52,8 +52,17 @@
 		
 		
 		
-		//when View Future Reservations button clicked -----------------------------------------------------
-	        
+		//when View Future Reservations form submitted -----------------------------------------------------
+		 if (request.getParameter("futureReserve") != null){		    	
+	    	 String userName = request.getParameter("usernameField2");
+	    	 
+	    	 //get the services from the database
+	    	 System.out.println("Hello");
+			 System.out.println(userName);
+			 futureReservations = service.displayFutureReservations(userName);
+	    }
+       
+       
 		   
 	}catch (ClassNotFoundException e) {
 		e.printStackTrace();		
@@ -73,64 +82,66 @@
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa+Ink:wght@700&family=Merriweather:wght@900&family=Noto+Sans:wght@100&family=Roboto+Condensed&family=Roboto+Slab:wght@300;500&family=Sofia+Sans+Condensed:wght@500&display=swap" rel="stylesheet">
-	<!-- link rel="stylesheet" href="${pageContext.request.contextPath}/css/home.css"-->
-	<link rel="stylesheet" href="css/home.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/home.css">
 
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	
 	
 	<script type="text/javascript">
-	
         const introspectUrl = 'https://api.asgardeo.io/t/ushanianu/oauth2/introspect';
         const accessToken = localStorage.getItem('access_token');
         const idToken = localStorage.getItem('id_token');
         
-        //Indicating that the user is authenticated. 
+    	 // Check if the user is authenticated
         if(accessToken && idToken){
         	
-        var settings = {
-            "url": "https://api.asgardeo.io/t/ushanianu/oauth2/userinfo",
-            "method": "GET",
-            "timeout": 0,
-            "headers": {
-                "Authorization": "Bearer " + accessToken
-            },
-        };
+	        var settings = {
+	        	// Make an AJAX request to fetch user information
+	            "url": "https://api.asgardeo.io/t/ushanianu/oauth2/userinfo",
+	            "method": "GET",
+	            "timeout": 0,
+	            "headers": {
+	                "Authorization": "Bearer " + accessToken
+	            },
+	        };
 
-        $.ajax(settings)
-            .done(function (response) {
-                console.log(response);
-                var username =  response.username;
-                var given_name = response.given_name;
-                var phone = response.phone_number;
-                var email = response.email;
-                var parts = given_name.split(' ');
-                var firstName = parts[0];
-                document.getElementById('givenName').textContent = given_name;
-                document.getElementById('name').textContent = firstName;
-                document.getElementById('email').textContent = email;
-                document.getElementById('phone').textContent = phone;
-                
-                document.getElementById('submit').addEventListener('click', function () {
-                    // Set the username as a hidden field value in the form
-                    document.getElementById('usernameField').value = username;
-                });
-                
-                //Store the username in a session attribute
-                session.setAttribute("username", username);
-             	console.log(session.getAttribute('username'));    
-                
-            })
-            .fail(function (jqXHR, textStatus, errorThrown) {
-                // Handle any errors here
-                console.error('Error:', errorThrown);
-                alert("Error in the authorization. Login again!");
-                window.location.href = "../index.jsp";
-            });
+	        $.ajax(settings)
+	            .done(function (response) {
+	                console.log(response);
+	                var username =  response.username;
+	                
+	                // Set user information in the form fields
+	                document.getElementById('givenName').textContent = response.given_name;
+	                document.getElementById('name').textContent = response.given_name.split(' ')[0];
+	                document.getElementById('email').textContent = response.email;
+	                document.getElementById('phone').textContent = response.phone_number;
+	                
+	                document.getElementById('submit').addEventListener('click', function () {
+	                    // Set the username as a hidden field value in the form
+	                    document.getElementById('usernameField').value = username;
+	                });
+	                document.getElementById('futureReserve').addEventListener('click', function () {
+	                    // Set the username as a hidden field value in the form
+	                    document.getElementById('usernameField2').value = username;
+	                   
+	                });
+	                
+	                //Store the username in a session attribute
+	                session.setAttribute("username", username);
+	             	console.log(session.getAttribute('username'));	             	
+	            
+	            })
+	            .fail(function (jqXHR, textStatus, errorThrown) {
+	                // Handle any errors here
+	                console.error('Error:', errorThrown);
+	                alert("Error in the authorization. Login again!");
+	                window.location.href = "../index.jsp";
+	            });
         }
         else{
         	window.location.href = "../index.jsp";	
         }
+    });
     </script>
 </head>
 
@@ -146,11 +157,14 @@
         <div class="container my-5 d-flex flex-column align-items-center">
             <h2>Reserve Your Spot Now</h2>
 
-            <!-- View Buttons -->
-            <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#viewReservationModal" id="viewReservationBtn">View Reservations</button>
-            <!-- button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#viewReservationModal" id="viewReservationBtn">View Reservations</button>-->
-            
-
+            <!-- View Future Reservations Model -->            
+            <form class="mb-5" method="post" id="myForm" action="?displayFuture=true" onclick="document.getElementById('future').style.display='block'"  >
+				<input type="hidden" id="usernameField2" name="usernameField2" value="" >              
+				<input type="submit" class="res" id="futureReserve" name="futureReserve" value= "Future Reservations" >
+			</form> 
+			
+		
+			<!-- Reservation form -->
             <form method="post" id="reserveForm" name="reserveForm">
                 <div class="mb-3">
                     <label for="vehicleRegistrationNumber" class="form-label">Vehicle Number *</label>
@@ -189,62 +203,69 @@
             </form>
         </div>
     </div>
-    <!-- End Reservation form -->
+
     
+
     
     
        
-    <!-- View Future Reservations Modal -->
-    <div class="container my-5 text-center">
-        <h2>Discover Your Journey</h2>
+    <!-- View Future Reservations Modal --> 		
+	<% if (request.getParameter("displayFuture") != null && request.getParameter("displayFuture").equals("true")) { %> 
+		
+		<div class="container my-5 text-center">
+        <h2>Discover Your Journey</h2>   
+	        <table class="table">
+			  <thead class="thead-dark">
+			    <tr>
+				    <th>Booking ID</th>
+		            <th>Date</th>
+		            <th>Time</th>
+		            <th>Location</th>
+		            <th>Mileage</th>
+		            <th>Vehicle Number</th>
+		            <th>Message</th>
+		            <th>Action</th>
+			    </tr>
+		    
+			    <%
+			        Date currentDate = new Date();
+			        
+			        if (futureReservations != null) {
+			            while (futureReservations.next()) {
+			            	
+			            	Date reservationDate = futureReservations.getDate("date");
+			            	
+			            	if(reservationDate.before(currentDate)){
+			            		 continue;
+			            	}
+			                int bookingId = futureReservations.getInt("booking_id");
+			                Time prefferedTime = futureReservations.getTime("time");
+			                String prefferedLocation = futureReservations.getString("location");
+			                int mileage = futureReservations.getInt("mileage");
+			                String vehicleRegistrationNumber = futureReservations.getString("vehicle_no");
+			                String message = futureReservations.getString("message");     
+			     %>
+		                <tr>
+				            <td><%= bookingId %></td>
+				            <td><%= reservationDate %></td>
+				            <td><%= prefferedTime %></td>
+				            <td><%= prefferedLocation %></td>
+				            <td><%= mileage %></td>
+				            <td><%= vehicleRegistrationNumber %></td>
+				            <td><%= message %></td>
+				            <td><button onclick="document.getElementById('id01').style.display='block';  document.getElementById('bookingID').value = <%= bookingId %>;" class="delete">Delete</button></td>
+				        </tr>
+        		<% 
+           			 }}
             
-        <table class="table">
-		  <thead class="thead-dark">
-		    <tr>
-			    <th>Booking ID</th>
-	            <th>Date</th>
-	            <th>Time</th>
-	            <th>Location</th>
-	            <th>Mileage</th>
-	            <th>Vehicle Number</th>
-	            <th>Message</th>
-		    </tr>
+   				 %>
+			   </thead>
+			</table>
+	    </div> 
+    <% } %>
+    
+    
 
-
-		   </thead>
-		</table>
-    </div> 
-    
-    
-    
-    
-        	        <div class="container my-5 text-center">
-	        <h2 >Discover Your Journey</h2>
-			<table class="table">
-	  <thead class="thead-dark">
-	    <tr>
-	      <th scope="col">Booking ID</th>
-	      <th scope="col">Date</th>
-	      <th scope="col">Time</th>
-	      <th scope="col">Location</th>
-	      <th scope="col">Vehicle No</th>
-	      <th scope="col">Mileage</th>
-	    </tr>
-	  </thead>
-	  <tbody>
-	    <tr>
-	      <td>1</td>
-	      <td>Mark</td>
-	      <td>Otto</td>
-	      <td>@mdo</td>
-	      <td>@mdo</td>
-	      <td>@mdo</td>
-	    </tr>
-	  </tbody>
-	</table>
-	
-
-    </div>
     
     
 
