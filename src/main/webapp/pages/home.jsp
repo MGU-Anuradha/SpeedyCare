@@ -3,95 +3,92 @@
 <%@ page import="com.services.jsp.*" %>
 
 <%
-	ServiceDAO service = new ServiceDAO();
-	//Database connection parameters
-	String dbUrl = "jdbc:mysql://51.132.137.223:3306/isec_assessment2";
-	String dbUser = "isec";
-	String dbPassword = "EUHHaYAmtzbv";
-	ResultSet pastReservations = null;
-	ResultSet futureReservations = null;
+    ServiceDAO service = new ServiceDAO();
+    // Database connection parameters
+    String dbUrl = "jdbc:mysql://51.132.137.223:3306/isec_assessment2";
+    String dbUser = "isec";
+    String dbPassword = "EUHHaYAmtzbv";
+    ResultSet pastReservations = null;
+    ResultSet futureReservations = null;
 
-	
-	try{
-		//when Submit Reservation button clicked -----------------------------------------------------
-		if (request.getParameter("submit") != null){
-			
-			// Retrieve form data-----------------------	    	
-		    String userName = request.getParameter("usernameField");
-		    String reservationDate = request.getParameter("pickupDate");
-		    String preferredTime = request.getParameter("preferredTime");
-		 	String preferredLocation = request.getParameter("preferredLocation");
-		    String vehicleRegistrationNumber = request.getParameter("vehicleRegistrationNumber");
-		    String currentMileage = request.getParameter("currentMileage");
-		    String message = request.getParameter("message");
-		   
-			
-		    System.out.println("Username: " + userName);
-		    System.out.println("location: " + preferredLocation);
-		    System.out.println("Mileage: " + currentMileage);
-		    System.out.println("Message: " + message);
-		    System.out.println("Vehicle No: " + vehicleRegistrationNumber);
-		    
-		    
-		   //Insert data to the database------------------------ 
-		   int rowsAdded = service.addReservation (preferredLocation,currentMileage,vehicleRegistrationNumber,message,userName,reservationDate,preferredTime );
-	       
-		   if (rowsAdded > 0) {
-		          out.println("Data inserted successfully.");
-		          response.sendRedirect(request.getRequestURI());  
-	       }else if(rowsAdded == -1){
-	        	 out.println("Invalid time format. Please enter time in hh:mm format.");
-	       }else if(rowsAdded == -2){
-	        	 out.println("Error parsing time");
-	       } 
-		   
-	   }else {
-      	 out.println("Failed to insert data.");
-       }
-		
-				
-		//when View Future Reservations form submitted -----------------------------------------------------
-		 if (request.getParameter("futureReserve") != null){		    	
-	    	 String userName = request.getParameter("usernameField2");	    	 
-	    	 //get the services from the database
-	    	 System.out.println("Hello");
-			 System.out.println(userName);
-			 futureReservations = service.displayFutureReservations(userName);
-	    }
-       
-		//when View Past Reservations form submitted -----------------------------------------------------    
-		 if (request.getParameter("pastReserve") != null){		    	
-	    	 String userName = request.getParameter("usernameField3");
-	    	 System.out.println("Hello");
-	    	 System.out.println(userName);
-	    	 pastReservations = service.displayPastReservations(userName); 	
-	    }
-		
-		//When the delete button is clicked
-		  if (request.getParameter("delete") != null){
-		    	
-		    	String bookingId = request.getParameter("bookingID");
-		    	
-		    	int id = Integer.parseInt(bookingId);
-		    	//delete the row
-		    	int rowsAffected = service.deleteReservations(id);
-		    	
-		    	if (rowsAffected > 0) {
-		    		//refresh the site  
-		    		 response.sendRedirect(request.getRequestURI());			         
-			    }else if(rowsAffected == -1){
-			    	out.println("Error in the databse. Try again later");
-			    } else {
-			        out.println("No data found for the given booking ID");
-			    }		    			    	
-		   } 
-       
-       		   
-	}catch (ClassNotFoundException e) {
-		e.printStackTrace();		
-	}
-	
+    try {
+        // when Submit Reservation button clicked -----------------------------------------------------
+        if (request.getParameter("submit") != null) {
+
+            // Retrieve form data-----------------------
+            String userName = request.getParameter("usernameField");
+            String reservationDate = request.getParameter("pickupDate");
+            String preferredTime = request.getParameter("preferredTime");
+            String preferredLocation = request.getParameter("preferredLocation");
+            String vehicleRegistrationNumber = request.getParameter("vehicleRegistrationNumber");
+            String currentMileage = request.getParameter("currentMileage");
+            String message = request.getParameter("message");
+
+            // Insert data to the database------------------------
+            int rowsAdded = service.addReservation(preferredLocation, currentMileage, vehicleRegistrationNumber, message, userName, reservationDate, preferredTime);
+
+            if (rowsAdded > 0) {
+                out.println("Data inserted successfully.");
+                response.sendRedirect(request.getRequestURI());
+            } else if (rowsAdded == -1) {
+                out.println("Invalid time format. Please enter time in hh:mm format.");
+            } else if (rowsAdded == -2) {
+                out.println("Error parsing time.");
+            } else if (rowsAdded == -3) {
+                out.println("Invalid mileage format. Convert mileage into an integer.");
+            } else if (rowsAdded == -4) {
+                out.println("Invalid date format. Please enter date in yyyy-MM-dd format.");
+            } else {
+                out.println("Failed to insert data.");
+            }
+        }
+
+        // when View Future Reservations form submitted -----------------------------------------------------
+        if (request.getParameter("futureReserve") != null) {
+            String userName = request.getParameter("usernameField2");
+            System.out.println("Hello");
+            System.out.println(userName);
+            futureReservations = service.displayFutureReservations(userName);
+        }
+
+        // when View Past Reservations form submitted -----------------------------------------------------
+        if (request.getParameter("pastReserve") != null) {
+            String userName = request.getParameter("usernameField3");
+            System.out.println("Hello");
+            System.out.println(userName);
+            pastReservations = service.displayPastReservations(userName);
+        }
+
+        // When the delete button is clicked
+        if (request.getParameter("delete") != null) {
+            String bookingId = request.getParameter("bookingID");
+            try {
+                int id = Integer.parseInt(bookingId);
+                // delete the row
+                int rowsAffected = service.deleteReservations(id);
+
+                if (rowsAffected > 0) {
+                    // refresh the site
+                    response.sendRedirect(request.getRequestURI());
+                } else if (rowsAffected == -1) {
+                    out.println("Error in the database. Try again later.");
+                } else {
+                    out.println("No data found for the given booking ID.");
+                }
+            } catch (NumberFormatException e) {
+                out.println("Invalid booking ID format.");
+            }
+        }
+    } catch (ClassNotFoundException e) {
+        out.println("Error: Database driver class not found.");
+        e.printStackTrace(); // Log the exception for debugging
+    } catch (SQLException e) {
+        out.println("Error: Database operation failed. Please try again later.");
+        e.printStackTrace(); // Log the exception for debugging
+    }
 %>
+
+
 
 
 
@@ -111,7 +108,8 @@
 	
 	
 	<script type="text/javascript">
-        const introspectUrl = 'https://api.asgardeo.io/t/ushanianu/oauth2/introspect';
+        
+		const introspectUrl = 'https://api.asgardeo.io/t/ushanianu/oauth2/introspect';
         const accessToken = localStorage.getItem('access_token');
         const idToken = localStorage.getItem('id_token');
         
