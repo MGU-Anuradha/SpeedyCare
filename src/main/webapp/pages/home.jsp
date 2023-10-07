@@ -126,7 +126,7 @@
     <div class="form-container">
         <div class="container my-5 d-flex flex-column align-items-center">
             <h2>Reserve Your Spot Now</h2>
-
+            
             <!-- View Future Reservations Model -->            
             <form class="mb-5" method="post" id="myForm" action="?displayFuture=true" onclick="document.getElementById('future').style.display='block'"  >
 				<input type="hidden" id="usernameField2" name="usernameField2" value="" >              

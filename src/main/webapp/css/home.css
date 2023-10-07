@@ -4,15 +4,16 @@
     min-height: 100vh;
     width: 100%;
     box-sizing: border-box;
-    background-image: url('../images/background1.png'); /* Specify the path to your image */
-    background-size: cover; /* Cover the entire container with the background image */
-    background-repeat: no-repeat; /* Do not repeat the background image */
+    background-image: url('../images/background1.png'); 
+    background-size: cover; 
+    background-repeat: no-repeat; 
 }
-
 h2 {
     font-family: 'Sofia Sans Condensed', sans-serif;
 }
-
+#myForm .mb-5 {
+   margin-bottom: 10px;
+}
 /* Style the form */
 #reserveForm {
     max-width: 400px;
@@ -26,7 +27,6 @@ h2 {
 
 /* Style form elements */
 #reserveForm .mb-3 {
-    margin-bottom: 15px;
    font-family: 'Roboto Condensed', sans-serif;
 }
 .button-container {
@@ -36,7 +36,7 @@ h2 {
 }
 
 
-/* table.css */
+/* Style the table */
 body {
 	background-color: rgb(128, 128, 128);
     background-size: cover;
@@ -46,35 +46,31 @@ h2 {
     font-family: 'Sofia Sans Condensed', sans-serif;
 }
 
-/* Style the table header */
 .table thead th {
 	font-family: 'Lato', sans-serif;
 	
-    background-color: rgb(0, 0, 0); /* Dark background color for header */
-    color: rgb(255, 255, 255); /* Text color for header */
+    background-color: rgb(0, 0, 0); 
+    color: rgb(255, 255, 255); 
 }
 
-/* Style table rows */
 .table tbody tr:nth-child(even) {
-    background-color: #f2f2f2; /* Light background color for even rows */
+    background-color: #f2f2f2; 
 }
 
-/* Hover effect for table rows */
 .table tbody tr:hover {
-    background-color: #cce5ff; /* Background color on hover */
+    background-color: #cce5ff; 
 }
 
-/* Style the table cells */
 .table tbody td, .table thead th {
-    border: 1px solid #dee2e6; /* Border for cells */
-    padding: 10px; /* Padding inside cells */
+    border: 1px solid #dee2e6; 
+    padding: 10px; 
 }
 
-/* Center text in table cells */
 .table tbody td, .table thead th {
     text-align: center;
 }
-/* footer.css */
+
+/* Style footer */
 footer {
     background-color: #333;
     color: #fff;
