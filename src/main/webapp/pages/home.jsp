@@ -62,6 +62,14 @@
 			 futureReservations = service.displayFutureReservations(userName);
 	    }
        
+		//when View Past Reservations form submitted -----------------------------------------------------    
+		 if (request.getParameter("pastReserve") != null){		    	
+	    	 String userName = request.getParameter("usernameField3");
+	    	 System.out.println("Hello");
+	    	 System.out.println(userName);
+	    	 pastReservations = service.displayPastReservations(userName); 	
+	    }
+       
        
 		   
 	}catch (ClassNotFoundException e) {
@@ -121,9 +129,10 @@
 	                    document.getElementById('usernameField').value = username;
 	                });
 	                document.getElementById('futureReserve').addEventListener('click', function () {
-	                    // Set the username as a hidden field value in the form
-	                    document.getElementById('usernameField2').value = username;
-	                   
+	                    document.getElementById('usernameField2').value = username; 
+	                });
+	                document.getElementById('pastReserve').addEventListener('click', function () {
+	                    document.getElementById('usernameField3').value = username;	                   
 	                });
 	                
 	                //Store the username in a session attribute
@@ -161,6 +170,13 @@
             <form class="mb-5" method="post" id="myForm" action="?displayFuture=true" onclick="document.getElementById('future').style.display='block'"  >
 				<input type="hidden" id="usernameField2" name="usernameField2" value="" >              
 				<input type="submit" class="res" id="futureReserve" name="futureReserve" value= "Future Reservations" >
+			</form> 
+			
+			
+			<!-- View Past Reservations Model -->            
+            <form class="mb-5" method="post" id="myForm"  action="?displayPast=true" onclick="document.getElementById('past').style.display='block'" >
+				<input type="hidden" id="usernameField3" name="usernameField3" value="" >              
+				<input type="submit" class="res" id="pastReserve" name= "pastReserve" value="Past Reservations" >
 			</form> 
 			
 		
@@ -264,6 +280,63 @@
 	    </div> 
     <% } %>
     
+
+
+
+
+
+	<!-- View Past Reservations Modal --> 		
+	<% if (request.getParameter("displayPast") != null && request.getParameter("displayPast").equals("true")) { %> 
+		
+		<div class="container my-5 text-center">
+        <h2>Discover Your Journey Past</h2>   
+	        <table class="table">
+			  <thead class="thead-dark">
+			    <tr>
+				    <th>Booking ID</th>
+		            <th>Date</th>
+		            <th>Time</th>
+		            <th>Location</th>
+		            <th>Mileage</th>
+		            <th>Vehicle Number</th>
+		            <th>Message</th>
+			    </tr>
+		    
+			    <%
+			        Date currentDate = new Date();
+			        
+			        if (pastReservations != null) {
+			            while (pastReservations.next()) {
+			            	
+			            	Date reservationDate = pastReservations.getDate("date");
+			            	
+			            	if(!reservationDate.before(currentDate)){
+			            		 continue;
+			            	}
+			                int bookingId = pastReservations.getInt("booking_id");
+			                Time prefferedTime = pastReservations.getTime("time");
+			                String prefferedLocation = pastReservations.getString("location");
+			                int mileage = pastReservations.getInt("mileage");
+			                String vehicleRegistrationNumber = pastReservations.getString("vehicle_no");
+			                String message = pastReservations.getString("message");     
+			     %>
+		                <tr>
+				            <td><%= bookingId %></td>
+				            <td><%= reservationDate %></td>
+				            <td><%= prefferedTime %></td>
+				            <td><%= prefferedLocation %></td>
+				            <td><%= mileage %></td>
+				            <td><%= vehicleRegistrationNumber %></td>
+				            <td><%= message %></td>
+				        </tr>
+        		<% 
+           			 }}
+            
+   				 %>
+			   </thead>
+			</table>
+	    </div> 
+    <% } %>
     
 
     
