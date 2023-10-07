@@ -35,7 +35,6 @@ h2 {
     align-items: center;
 }
 
-@charset "ISO-8859-1";
 
 /* table.css */
 body {
@@ -46,6 +45,7 @@ body {
 h2 {
     font-family: 'Sofia Sans Condensed', sans-serif;
 }
+
 /* Style the table header */
 .table thead th {
 	font-family: 'Lato', sans-serif;
