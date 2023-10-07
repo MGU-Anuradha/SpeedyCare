@@ -1,4 +1,5 @@
 package com.services.jsp;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -9,29 +10,28 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.sql.Time;
 
-
 public class ServiceDAO {
-	
-	private String jdbcUrl = "jdbc:mysql://51.132.137.223:3306/isec_assessment2";
+
+    private String jdbcUrl = "jdbc:mysql://51.132.137.223:3306/isec_assessment2";
     private String jdbcUser = "isec";
     private String jdbcPassword = "EUHHaYAmtzbv";
-    
+
     // Method to establish a database connection
     private Connection getConnection() throws ClassNotFoundException, SQLException {
         Class.forName("com.mysql.cj.jdbc.Driver");
         return DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);
     }
-    
+
     // Method to close the database connection
     private void closeConnection(Connection connection) throws SQLException {
         if (connection != null && !connection.isClosed()) {
             connection.close();
         }
     }
-    
-    
+
     // Method to add a reservation to the database
-    public int addReservation(String location, String mileage, String vehicleNumber, String message,String userName, String reservationDate, String preferredTime) throws ClassNotFoundException, SQLException {
+    public int addReservation(String location, String mileage, String vehicleNumber, String message, String userName,
+            String reservationDate, String preferredTime) throws ClassNotFoundException, SQLException {
         Connection connection = null;
         try {
             connection = getConnection();
@@ -54,8 +54,7 @@ public class ServiceDAO {
                 // Handle invalid date format
                 return -4;
             }
-            
-            
+
             // Handle time format
             Time parsedTime;
             try {
@@ -75,29 +74,28 @@ public class ServiceDAO {
             }
 
             // Perform the insertion into the database using a prepared statement
-            String insertQuery = "INSERT INTO vehicle_service (location, mileage, vehicle_no, message, username, date, time) " + "VALUES (?, ?, ?, ?, ?, ?, ?)";
-            
+            String insertQuery = "INSERT INTO vehicle_service (location, mileage, vehicle_no, message, username, date, time) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
             PreparedStatement preparedStatement = connection.prepareStatement(insertQuery);
             preparedStatement.setDate(1, new java.sql.Date(parsedDate.getTime()));
             preparedStatement.setTime(2, parsedTime);
             preparedStatement.setString(3, location);
             preparedStatement.setInt(4, parsedMileage);
-            preparedStatement.setString(5, vehicleNumber);            
+            preparedStatement.setString(5, vehicleNumber);
             preparedStatement.setString(6, message);
-            preparedStatement.setString(7, userName);            
-            
+            preparedStatement.setString(7, userName);
+
             int rowsAffected = preparedStatement.executeUpdate();
             preparedStatement.close();
-            
+
             return rowsAffected;
-            
+
         } finally {
-            closeConnection(connection); 
+            closeConnection(connection);
         }
     }
-   
-		
-	
+
     // Method to retrieve future reservations for a user
     public ResultSet displayFutureReservations(String userName) throws ClassNotFoundException, SQLException {
         Connection connection = null;
@@ -119,15 +117,13 @@ public class ServiceDAO {
             closeConnection(connection);
         }
     }
-	
-	
-	
+
     // Method to retrieve past reservations for a user
     public ResultSet displayPastReservations(String userName) throws ClassNotFoundException, SQLException {
         Connection connection = null;
         try {
             connection = getConnection();
-            
+
             // Get current date and time in the required format
             SimpleDateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String currentDateTime = dateTimeFormat.format(new Date());
@@ -144,8 +140,6 @@ public class ServiceDAO {
         }
     }
 
-    
-		
     // Method to delete a reservation by ID
     public int deleteReservations(int bookingId) throws ClassNotFoundException, SQLException {
         Connection connection = null;
@@ -159,6 +153,6 @@ public class ServiceDAO {
         } finally {
             closeConnection(connection);
         }
-    } 
+    }
 
 }
