@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="<%= request.getContextPath() %>/css/navbar.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
 <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@900&family=Noto+Sans:wght@100&family=Roboto+Slab:wght@300;500&display=swap" rel="stylesheet">
+
 </head>
 <body>
 	<!-- Navbar -->
@@ -22,52 +23,33 @@
 	                <i class="bi bi-person"></i> <!-- Bootstrap Icons: Person Icon -->
 	            </button>
 	            <!-- Logout Button -->
-	        	<button class="btn btn-dark" id="logoutButton">Logout</button>
+	        	<button class="btn btn-dark" id="logoutButton" onclick="window.location.href='../index.jsp'">Logout</button>
 	        </div>
 	
 	    	
-	        <!-- Profile Modal -->
-	        <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
-	            <div class="modal-dialog modal-dialog-centered">
-	                <div class="modal-content">
-	                    <div class="modal-header">
-	                        <h5 class="modal-title" id="profileModalLabel">User Profile</h5>
-	                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-	                    </div>
-	                    <div class="modal-body">
-	                        <!-- User Profile Details will be displayed here -->
-	                        <img class="round" src="https://randomuser.me/api/portraits/women/79.jpg" alt="user" />
-	                        <h3>@<span id="modalUsername"></span></h3>
-	                        <h6><span id="modalEmail"></span></h6>
-	                        <p>Phone: <span id="modalPhone"></span><br/>Location: Sri Lanka</p>
-	                    </div>
-	                </div>
-	            </div>
-	        </div>
+	        <!-- User Profile Modal -->
+			<div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+			    <div class="modal-dialog modal-dialog-centered">
+			        <div class="modal-content">
+			            <div class="modal-header">
+			                <h5 class="modal-title" id="profileModalLabel">User Profile</h5>
+			                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			            </div>
+			            <div class="modal-body">
+			                <h3>@<span id="username"></span></h3>
+			                <h6>Name: <span id="name"></span></h6>
+			                <h6>Email: <span id="email"></span></h6>
+			                <p>Phone: <span id="phone"></span><br/>
+			                Location: <span id="country"></span></p>
+			            </div>
+			        </div>
+			    </div>
+			</div>
+			
+			<script src="../js/script.js"></script>
+
 	    </div>
 	</nav>
-	
-	<!-- Custom JavaScript code for Popup profile and Logout -->
-	<script type="text/javascript">
-	    // Assuming you have retrieved user details in these variables
-	    var modalUsername = "john_doe";
-	    var modalEmail = "john@example.com";
-	    var modalPhone = "123-456-7890";
-	
-	    document.getElementById('profileDropdown').addEventListener('click', function () {
-	        // Set user details in the modal
-	        document.getElementById('modalUsername').textContent = modalUsername;
-	        document.getElementById('modalEmail').textContent = modalEmail;
-	        document.getElementById('modalPhone').textContent = modalPhone;
-	    });
-	
-	    // Logout functionality
-	    document.getElementById('logoutButton').addEventListener('click', function () {
-	        // Perform logout operation here, for example redirect to logout page or clear user session
-	        // window.location.href = 'logout.jsp';
-	        alert('Logged out successfully!');
-	    });
-	</script>
 	<!-- NavBar End -->
 
 </body>

@@ -21,12 +21,14 @@ if (accessToken && idToken) {
             console.log(response);
             var username = response.username;
 
-            // Set user information in the form fields
-            document.getElementById('givenName').textContent = response.given_name;
-            document.getElementById('name').textContent = response.given_name.split(' ')[0];
-            document.getElementById('email').textContent = response.email;
-            document.getElementById('phone').textContent = response.phone_number;
-
+            document.getElementById('profileDropdown').addEventListener('click', function () {
+	            // Set user information in the form fields
+	            document.getElementById('givenName').textContent = response.given_name;
+	            document.getElementById('name').textContent = response.given_name.split(' ')[0];
+	            document.getElementById('email').textContent = response.email;
+	            document.getElementById('phone').textContent = response.phone_number;
+	            document.getElementById('country').textContent = response.country;
+			});
             document.getElementById('submit').addEventListener('click', function () {
                 // Set the username as a hidden field value in the form
                 document.getElementById('usernameField').value = username;
