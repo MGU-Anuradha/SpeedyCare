@@ -45,17 +45,14 @@
 	        	 out.println("Error parsing time");
 	       } 
 		   
-	   }/*else {
+	   }else {
       	 out.println("Failed to insert data.");
-       }*/
+       }
 		
-		
-		
-		
+				
 		//when View Future Reservations form submitted -----------------------------------------------------
 		 if (request.getParameter("futureReserve") != null){		    	
-	    	 String userName = request.getParameter("usernameField2");
-	    	 
+	    	 String userName = request.getParameter("usernameField2");	    	 
 	    	 //get the services from the database
 	    	 System.out.println("Hello");
 			 System.out.println(userName);
@@ -69,9 +66,27 @@
 	    	 System.out.println(userName);
 	    	 pastReservations = service.displayPastReservations(userName); 	
 	    }
+		
+		//When the delete button is clicked
+		  if (request.getParameter("delete") != null){
+		    	
+		    	String bookingId = request.getParameter("bookingID");
+		    	
+		    	int id = Integer.parseInt(bookingId);
+		    	//delete the row
+		    	int rowsAffected = service.deleteReservations(id);
+		    	
+		    	if (rowsAffected > 0) {
+		    		//refresh the site  
+		    		 response.sendRedirect(request.getRequestURI());			         
+			    }else if(rowsAffected == -1){
+			    	out.println("Error in the databse. Try again later");
+			    } else {
+			        out.println("No data found for the given booking ID");
+			    }		    			    	
+		   } 
        
-       
-		   
+       		   
 	}catch (ClassNotFoundException e) {
 		e.printStackTrace();		
 	}
@@ -269,7 +284,7 @@
 				            <td><%= mileage %></td>
 				            <td><%= vehicleRegistrationNumber %></td>
 				            <td><%= message %></td>
-				            <td><button onclick="document.getElementById('id01').style.display='block';  document.getElementById('bookingID').value = <%= bookingId %>;" class="delete">Delete</button></td>
+				            <td><button onclick="document.getElementById('delete').style.display='block';  document.getElementById('bookingID').value = <%= bookingId %>;" class="delete">Delete</button></td>
 				        </tr>
         		<% 
            			 }}
@@ -280,7 +295,23 @@
 	    </div> 
     <% } %>
     
-
+	
+	<!-- Delete Reservations Modal --> 
+	<div id="delete" class="modal">
+		<span onclick="document.getElementById('delete').style.display='none'" class="close" title="Close Modal">?</span>
+	  	<form class="modal-content" method="post" >
+	    	<div class="container2">
+	      		<h1>Delete Reservation</h1>
+	      		<p>Are you sure you want to delete your reservation?</p>
+	    		<input type="hidden" id="bookingID" name="bookingID" value="" >
+	     		
+	     		<div class="clearfix">
+	        		<button type="button" onclick="document.getElementById('delete').style.display='none'" class="cancelbtn">Cancel</button>
+	        		<input type="submit" value="Delete" name="delete" onclick="document.getElementById('delete').style.display='none'" class="deletebtn">
+	      		</div>
+	    	</div>
+	  	</form>
+	</div>
 
 
 
