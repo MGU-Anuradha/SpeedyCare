@@ -151,13 +151,44 @@
                     <label for="pickupDate" class="form-label">Reservation Date *</label>
                     <input type="date" class="form-control" id="pickupDate" name="pickupDate"  required>
                 </div>
-                <div class="col-md-6 form-group mb-3">
-	                <label for="time" class="col-form-label">Preferred Time * </label><br>
-  					<input type="time" id="preferrdTime" name="preferredTime" required>
-	            </div>
+                <div class="mb-3">
+                    <label for="preferredTime" class="form-label">Preferred Time *</label>
+                    <select class="form-select" id="preferredTime" name="preferredTime" required>
+                        <option value="10AM">10 AM</option>
+                        <option value="11AM">11 AM</option>
+                        <option value="12PM">12 PM</option>
+                    </select>
+                </div>
                 <div class="mb-3">
                     <label for="preferredLocation" class="form-label">Location *</label>
-                    <input type="text" class="form-control" id="preferredLocation" name="preferredLocation" placeholder="Enter Preferred Location" required>
+                    <select class="form-select" id="preferredLocation" name="preferredLocation" required>
+						    <option selected>Choose...</option>
+						    <option value="Colombo">Colombo</option>
+				            <option value="Gampaha">Gampaha</option>
+				            <option value="Kalutara">Kalutara</option>
+				            <option value="Kandy">Kandy</option>
+				            <option value="Matale">Matale</option>
+				            <option value="Nuwara Eliya">Nuwara Eliya</option>
+				            <option value="Galle">Galle</option>
+				            <option value="Matara">Matara</option>
+				            <option value="Hambantota">Hambantota</option>
+				            <option value="Jaffna">Jaffna</option>
+				            <option value="Kilinochchi">Kilinochchi</option>
+				            <option value="Mannar">Mannar</option>
+				            <option value="Vavuniya">Vavuniya</option>
+				            <option value="Mullaitivu">Mullaitivu</option>
+				            <option value="Batticaloa">Batticaloa</option>
+				            <option value="Ampara">Ampara</option>
+				            <option value="Trincomalee">Trincomalee</option>
+				            <option value="Kurunegala">Kurunegala</option>
+				            <option value="Puttalam">Puttalam</option>
+				            <option value="Anuradhapura">Anuradhapura</option>
+				            <option value="Polonnaruwa">Polonnaruwa</option>
+				            <option value="Badulla">Badulla</option>
+				            <option value="Monaragala">Monaragala</option>
+				            <option value="Ratnapura">Ratnapura</option>
+				            <option value="Kegalle">Kegalle</option>
+						  </select>
                 </div>
                 <div class="mb-3">
                     <label for="currentMileage" class="form-label">Mileage</label>
