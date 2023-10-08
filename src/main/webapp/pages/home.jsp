@@ -142,7 +142,7 @@
 		             var username = response.username;
 			            
 		 	         // Set user information in the form fields
-		 	         document.getElementById('username').textContent = username;
+		 	         
 		 	         document.getElementById('givenName').textContent = response.given_name;
 		 	         document.getElementById('name').textContent = response.given_name.split(' ')[0];
 		 	         document.getElementById('email').textContent = response.email;
