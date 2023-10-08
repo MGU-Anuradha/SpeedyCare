@@ -24,6 +24,7 @@
             String currentMileage = request.getParameter("currentMileage");
             String message = request.getParameter("message");
             
+            //check this part
             System.out.println("Username: " + userName);
     	    System.out.println("location: " + preferredLocation);
     	    System.out.println("Mileage: " + currentMileage);
