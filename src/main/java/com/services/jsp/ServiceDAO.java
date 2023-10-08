@@ -54,7 +54,7 @@ public class ServiceDAO {
                 return -4;
             }
 
-            // Handle time format
+            /// Handle time format
             Time parsedTime;
             try {
                 // Check if the preferredTime matches the expected format "hh:mm"
@@ -73,15 +73,15 @@ public class ServiceDAO {
             }
 
             // Perform the insertion into the database using a prepared statement
-            String insertQuery = "INSERT INTO vehicle_service (location, mileage, vehicle_no, message, username, date, time) "
+            String insertQuery = "INSERT INTO vehicle_service (date, time, location,vehicle_no,mileage, message, username) "
                     + "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
             PreparedStatement preparedStatement = connection.prepareStatement(insertQuery);
             preparedStatement.setDate(1, new java.sql.Date(parsedDate.getTime()));
             preparedStatement.setTime(2, parsedTime);
             preparedStatement.setString(3, location);
-            preparedStatement.setInt(4, parsedMileage);
-            preparedStatement.setString(5, vehicleNumber);
+            preparedStatement.setString(4, vehicleNumber);
+            preparedStatement.setInt(5, parsedMileage);    
             preparedStatement.setString(6, message);
             preparedStatement.setString(7, userName);
 
