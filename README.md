@@ -3,7 +3,7 @@
 This web application is designed to facilitate vehicle service reservation while prioritizing security, authentication, and access control. 
 The project aims to mitigate OWASP Top 10 vulnerabilities, implement robust user authentication, and ensure strict access control policies. 
 
-## Application Functionality
+## Application Overview
 
 *User Profile and Reservation:*
 
