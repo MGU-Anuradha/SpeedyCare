@@ -32,6 +32,7 @@ public class ServiceDAO {
     // Method to add a reservation to the database
     public int addReservation(String location, String mileage, String vehicleNumber, String message, String userName, String reservationDate, String preferredTime) throws ClassNotFoundException, SQLException {
         Connection connection = null;
+        Time time = convertToSqlTime(preferredTime);
         try {
             connection = getConnection();
 
@@ -54,23 +55,7 @@ public class ServiceDAO {
                 return -4;
             }
 
-            /// Handle time format
-            Time parsedTime;
-            try {
-                // Check if the preferredTime matches the expected format "hh:mm"
-                if (preferredTime.matches("^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$")) {
-                    // If it matches, add ":00" to the end of the string to match SQL TIME format
-                    preferredTime += ":00";
-                    // Create a Time object
-                    parsedTime = Time.valueOf(preferredTime);
-                } else {
-                    // Handle invalid time format
-                    return -1;
-                }
-
-            } catch (IllegalArgumentException e) {
-                return -2;
-            }
+            
 
             // Perform the insertion into the database using a prepared statement
             String insertQuery = "INSERT INTO vehicle_service (date, time, location,vehicle_no,mileage, message, username) "
@@ -78,7 +63,7 @@ public class ServiceDAO {
 
             PreparedStatement preparedStatement = connection.prepareStatement(insertQuery);
             preparedStatement.setDate(1, new java.sql.Date(parsedDate.getTime()));
-            preparedStatement.setTime(2, parsedTime);
+            preparedStatement.setTime(2, time);
             preparedStatement.setString(3, location);
             preparedStatement.setString(4, vehicleNumber);
             preparedStatement.setInt(5, parsedMileage);    
@@ -159,6 +144,21 @@ public class ServiceDAO {
             return preparedStatement.executeUpdate();
         } finally {
             closeConnection(connection);
+        }
+    }
+    
+    
+    private static Time convertToSqlTime(String timeString) {
+        try {
+            // Parse the time string to java.util.Date
+            SimpleDateFormat format = new SimpleDateFormat("hh:mm a");
+            Date date = format.parse(timeString);
+
+            // Convert java.util.Date to java.sql.Time
+            return new Time(date.getTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null; // Handle parsing error appropriately
         }
     }
 

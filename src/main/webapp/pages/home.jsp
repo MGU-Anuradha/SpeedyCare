@@ -3,19 +3,24 @@
 <%@ page import="com.services.jsp.*" %>
 
 <%
-    ServiceDAO service = new ServiceDAO();
-    // Database connection parameters
-    String dbUrl = "jdbc:mysql://51.132.137.223:3306/isec_assessment2";
-    String dbUser = "isec";
-    String dbPassword = "EUHHaYAmtzbv";
-    ResultSet pastReservations = null;
-    ResultSet futureReservations = null;
+	//Instantiate ServiceDAO to interact with the database
+	ServiceDAO service = new ServiceDAO();
+	
+	// Database connection details
+	String dbUrl = "jdbc:mysql://51.132.137.223:3306/isec_assessment2";
+	String dbUser = "isec";
+	String dbPassword = "EUHHaYAmtzbv";
+	
+	// Result sets for future and past reservations
+	ResultSet pastReservations = null;
+	ResultSet futureReservations = null;
 
     try {
-        // when Submit Reservation button clicked -----------------------------------------------------
+    	// Handle form submissions -----------------------------------------------------
+        // when Submit Reservation button clicked
         if (request.getParameter("submit") != null) {
 
-            // Retrieve form data-----------------------
+            // Retrieve form data
             String userName = request.getParameter("usernameField");
             String reservationDate = request.getParameter("pickupDate");
             String preferredTime = request.getParameter("preferredTime");
@@ -24,12 +29,14 @@
             String currentMileage = request.getParameter("currentMileage");
             String message = request.getParameter("message");
             
-            //check this part
+            //todo: check this part
             System.out.println("Username: " + userName);
     	    System.out.println("location: " + preferredLocation);
     	    System.out.println("Mileage: " + currentMileage);
     	    System.out.println("Message: " + message);
     	    System.out.println("Vehicle No: " + vehicleRegistrationNumber);
+    	    System.out.println("Date : " + reservationDate);
+    	    System.out.println("time: " + preferredTime);
 
 
             // Insert data to the database------------------------
@@ -54,25 +61,22 @@
         // when View Future Reservations form submitted -----------------------------------------------------
         if (request.getParameter("futureReserve") != null) {
             String userName = request.getParameter("usernameField2");
-            System.out.println("Hello");
-            System.out.println(userName);
             futureReservations = service.displayFutureReservations (userName);
         }
 
         // when View Past Reservations form submitted -----------------------------------------------------
         if (request.getParameter("pastReserve") != null) {
             String userName = request.getParameter("usernameField3");
-            System.out.println("Hello");
-            System.out.println(userName);
             pastReservations = service.displayPastReservations(userName);
         }
 
         // When the delete button is clicked
         if (request.getParameter("delete") != null) {
+        	// Delete the reservation by ID
             String bookingId = request.getParameter("bookingID");
             try {
                 int id = Integer.parseInt(bookingId);
-                // delete the row
+
                 int rowsAffected = service.deleteReservations(id);
 
                 if (rowsAffected > 0) {
@@ -119,11 +123,14 @@
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>	
 	
 	
+	
+	<!-- JavaScript code for handling authentication and user data retrieval -->
 	<script type="text/javascript">
 
 		 const introspectUrl = 'https://api.asgardeo.io/t/ushanianu/oauth2/introspect';
 		 const accessToken = localStorage.getItem('access_token');
 		 const idToken = localStorage.getItem('id_token');
+		 
 	
 		 // Check if the user is authenticated
 		 if (accessToken && idToken) {
@@ -141,14 +148,21 @@
 		         .done(function (response) {
 		             console.log(response);
 		             var username = response.username;
-			            
-		 	         // Set user information in the form fields
+		             var email = response.email;
+		             var phone = response.phone_number;
+		             console.log(username);
+					console.log(phone);  
+		 	         // Set user information in the form fields  
+		 	         //document.getElementById('username').textContent = username;
+		 	         //document.getElementById('name').textContent = response.given_name.split(' ')[0];
+		 	         //document.getElementById('email').textContent = response.email;
+		 	        // document.getElementById('phone').textContent = response.phone_number;
+		 	         //document.getElementById('country').textContent = response.country;
 		 	         
-		 	         document.getElementById('givenName').textContent = response.given_name;
-		 	         document.getElementById('name').textContent = response.given_name.split(' ')[0];
-		 	         document.getElementById('email').textContent = response.email;
-		 	         document.getElementById('phone').textContent = response.phone_number;
-		 	         document.getElementById('country').textContent = response.country;
+		 	        localStorage.setItem('username',username);
+		 	       	localStorage.setItem('phone',response.phone_number);
+
+	
 		 			
 		             document.getElementById('submit').addEventListener('click', function () {
 		                 // Set the username as a hidden field value in the form
@@ -176,6 +190,12 @@
 		     window.location.href = "../index.jsp";
 		 }
 		 
+		 
+		 
+		
+		 
+
+		
 	</script>
 </head>
 
@@ -200,7 +220,7 @@
 	
 	    	
 	        <!-- User Profile Modal -->
-			<div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+			<div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true" >
 			    <div class="modal-dialog modal-dialog-centered">
 			        <div class="modal-content">
 			            <div class="modal-header">
@@ -208,11 +228,10 @@
 			                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			            </div>
 			            <div class="modal-body">
-			                <h3>@<span id="username"></span></h3>
-			                <h6>Name: <span id="name"></span></h6>
-			                <h6>Email:<span id="email"></span></h6>
-			                <p>Phone: <span id="phone"></span><br/>
-			                Location: <span id="country"></span></p>
+			                <h3>@<span id="modalUsername"></span></h3>
+	                        <h6><span id="modalEmail"></span></h6>
+	                        <p>Phone: <span id="modalPhone"></span><br/>
+	                        Location: Sri Lanka</p>
 			            </div>
 			        </div>
 			    </div>
@@ -221,6 +240,30 @@
 	    </div>
 	</nav>
 	<!-- NavBar End -->
+	
+	<!-- Custom JavaScript code for Popup profile and Logout -
+	<script type="text/javascript">
+	    // Assuming you have retrieved user details in these variables
+	    var modalUsername = "john_doe";
+	    var modalEmail = "john@example.com";
+	    var modalPhone = "123-456-7890";
+	
+	    document.getElementById('profileDropdown').addEventListener('click', function () {
+	        // Set user details in the modal
+	        document.getElementById('modalUsername').textContent = modalUsername;
+	        document.getElementById('modalEmail').textContent = modalEmail;
+	        document.getElementById('modalPhone').textContent = modalPhone;
+	    });
+	
+	    // Logout functionality
+	    document.getElementById('logoutButton').addEventListener('click', function () {
+	        // Perform logout operation here, for example redirect to logout page or clear user session
+	        // window.location.href = 'logout.jsp';
+	        alert('Logged out successfully!');
+	    });
+	</script-->
+
+
     
 
     <!-- Reservation form -->
@@ -255,11 +298,11 @@
                 <div class="mb-3">
                     <label for="preferredTime" class="form-label">Preferred Time *</label>
                     <select class="form-select" id="preferredTime" name="preferredTime" required>
-                    	<option selected>Choose...</option>
-                        <option value="10">10 AM</option>
-                        <option value="11">11 AM</option>
-                        <option value="12">12 PM</option>
-                    </select>
+					    <option selected>Choose...</option>
+					    <option value="10:00 AM">10:00 AM</option>
+					    <option value="11:00 AM">11:00 AM</option>
+					    <option value="12:00 PM">12:00 PM</option>
+					</select>
                 </div>
                 <div class="mb-3">
                     <label for="preferredLocation" class="form-label">Location *</label>
@@ -451,5 +494,24 @@
     <!-- Bootstrap JS from CDN -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
+<script>
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+	var username = localStorage.getItem('username');
+	var phone = localStorage.getItem('phone')
+
+	console.log(username);
+	console.log(phone);
+    document.getElementById('profileDropdown').addEventListener('click', function () {
+        	document.getElementById('modalUsername').textContent = username;
+        	document.getElementById('modalPhone').textContent = phone;
+	      
+	        
+        });
+   });
+
+</script>
 </body>
 </html>

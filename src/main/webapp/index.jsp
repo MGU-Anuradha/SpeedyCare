@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+    
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,6 +9,7 @@
 <link rel="stylesheet" href="css/styles.css">
 <link rel="stylesheet" href="css/bootstrap.css">
 </head>
+
 <body>
 	<div class="container">
 		<h1><b>Welcome to SpeedyCareHub!</b></h1>
