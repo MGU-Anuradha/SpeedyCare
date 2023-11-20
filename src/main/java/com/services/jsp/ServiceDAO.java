@@ -12,7 +12,7 @@ import java.sql.Time;
 
 public class ServiceDAO {
 
-    private String jdbcUrl = "jdbc:mysql://51.132.137.223:3306/isec_assessment2";
+    private String jdbcUrl = "jdbc:mysql://172.187.178.153:3306/isec_assessment2";
     private String jdbcUser = "isec";
     private String jdbcPassword = "EUHHaYAmtzbv";
 
