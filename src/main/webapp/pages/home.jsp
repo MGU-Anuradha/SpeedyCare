@@ -189,13 +189,7 @@
 		 } else {
 		     window.location.href = "../index.jsp";
 		 }
-		 
-		 
-		 
-		
-		 
-
-		
+		 		
 	</script>
 </head>
 
@@ -204,7 +198,7 @@
 
 <body>
     <!-- NavBar -->
-	<nav class="navbar navbar-light" style="background: linear-gradient(0deg, rgba(219,204,120,1) 0%, rgba(173,144,13,1) 99%);">
+	<nav class="navbar navbar-default bootsnav  navbar-sticky navbar-scrollspy"  data-minus-value-desktop="70" data-minus-value-mobile="55" data-speed="1000">
 	    <div class="container">
 	       <img src="<%= request.getContextPath() %>/images/logo.png" alt="Logo" width="100" height="40">  
 	       <b>SPEEDYCARE HUB</b>
@@ -240,49 +234,26 @@
 	    </div>
 	</nav>
 	<!-- NavBar End -->
-	
-	<!-- Custom JavaScript code for Popup profile and Logout -
-	<script type="text/javascript">
-	    // Assuming you have retrieved user details in these variables
-	    var modalUsername = "john_doe";
-	    var modalEmail = "john@example.com";
-	    var modalPhone = "123-456-7890";
-	
-	    document.getElementById('profileDropdown').addEventListener('click', function () {
-	        // Set user details in the modal
-	        document.getElementById('modalUsername').textContent = modalUsername;
-	        document.getElementById('modalEmail').textContent = modalEmail;
-	        document.getElementById('modalPhone').textContent = modalPhone;
-	    });
-	
-	    // Logout functionality
-	    document.getElementById('logoutButton').addEventListener('click', function () {
-	        // Perform logout operation here, for example redirect to logout page or clear user session
-	        // window.location.href = 'logout.jsp';
-	        alert('Logged out successfully!');
-	    });
-	</script-->
-
-
-    
+ 
 
     <!-- Reservation form -->
     <div class="form-container">
         <div class="container my-5 d-flex flex-column align-items-center">
             <h2>Reserve Your Spot Now</h2>
             
-            <!-- View Future Reservations Model -->            
-            <form class="mb-5" method="post" id="myForm" action="?displayFuture=true" onclick="document.getElementById('future').style.display='block'"  >
-				<input type="hidden" id="usernameField2" name="usernameField2" value="" >              
-				<input type="submit" class="res" id="futureReserve" name="futureReserve" value= "Future Reservations" >
-			</form> 
+            <!-- View Future and Past Reservations Models -->
+			<div class="mb-5" style="display: flex; gap: 10px;">
+			    <form method="post" id="futureReserveForm" action="?displayFuture=true" onclick="document.getElementById('future').style.display='block'">
+			        <input type="hidden" id="usernameField2" name="usernameField2" value="">
+			        <input type="submit" class="res" id="futureReserve" name="futureReserve" value="Future Reservations">
+			    </form>
 			
-			
-			<!-- View Past Reservations Model -->            
-            <form class="mb-5" method="post" id="myForm"  action="?displayPast=true" onclick="document.getElementById('past').style.display='block'" >
-				<input type="hidden" id="usernameField3" name="usernameField3" value="" >              
-				<input type="submit" class="res" id="pastReserve" name= "pastReserve" value="Past Reservations" >
-			</form> 
+			    <form method="post" id="pastReserveForm" action="?displayPast=true" onclick="document.getElementById('past').style.display='block'">
+			        <input type="hidden" id="usernameField3" name="usernameField3" value="">
+			        <input type="submit" class="res" id="pastReserve" name="pastReserve" value="Past Reservations">
+			    </form>
+			</div>
+ 
 			
 		
 			<!-- Reservation form -->
@@ -494,24 +465,18 @@
     <!-- Bootstrap JS from CDN -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-<script>
-
-
-
-document.addEventListener('DOMContentLoaded', function () {
-	var username = localStorage.getItem('username');
-	var phone = localStorage.getItem('phone')
-
-	console.log(username);
-	console.log(phone);
-    document.getElementById('profileDropdown').addEventListener('click', function () {
-        	document.getElementById('modalUsername').textContent = username;
-        	document.getElementById('modalPhone').textContent = phone;
-	      
-	        
-        });
-   });
-
-</script>
+	<script>	
+		document.addEventListener('DOMContentLoaded', function () {
+			var username = localStorage.getItem('username');
+			var phone = localStorage.getItem('phone')
+		
+			console.log(username);
+			console.log(phone);
+		    document.getElementById('profileDropdown').addEventListener('click', function () {
+		        	document.getElementById('modalUsername').textContent = username;
+		        	document.getElementById('modalPhone').textContent = phone;		        
+		        });
+		   });
+	</script>
 </body>
 </html>
