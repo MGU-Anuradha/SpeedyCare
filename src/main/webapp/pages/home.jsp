@@ -28,15 +28,6 @@
             String vehicleRegistrationNumber = request.getParameter("vehicleRegistrationNumber");
             String currentMileage = request.getParameter("currentMileage");
             String message = request.getParameter("message");
-            
-            //todo: check this part
-            System.out.println("Username: " + userName);
-    	    System.out.println("location: " + preferredLocation);
-    	    System.out.println("Mileage: " + currentMileage);
-    	    System.out.println("Message: " + message);
-    	    System.out.println("Vehicle No: " + vehicleRegistrationNumber);
-    	    System.out.println("Date : " + reservationDate);
-    	    System.out.println("time: " + preferredTime);
 
 
             // Insert data to the database------------------------
