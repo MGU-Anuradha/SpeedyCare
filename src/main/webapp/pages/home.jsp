@@ -119,7 +119,7 @@
 		         "method": "GET",
 		         "timeout": 0,
 		         "headers": {
-		             "Authorization": "Bearer " + accessToken
+		         "Authorization": "Bearer " + accessToken
 		         },
 		     };
 	
