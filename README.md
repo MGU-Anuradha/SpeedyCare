@@ -1,7 +1,6 @@
 # Vehicle Service Reservation Web Application
 
-This web application is designed to facilitate vehicle service reservation while prioritizing security, authentication, and access control. 
-The project aims to mitigate OWASP Top 10 vulnerabilities, implement robust user authentication, and ensure strict access control policies. 
+This web application is designed to facilitate vehicle service reservation while prioritizing security, authentication, and access control. 🚀🛡️
 
 ## Application Overview
 
@@ -33,3 +32,7 @@ The project aims to mitigate OWASP Top 10 vulnerabilities, implement robust user
 - Utilize the provided MySQL DB instance with a predefined table schema to store vehicle reservation records.
 - Develop the web application using JSP (JavaServer Pages) and deploy it on Tomcat 9 server with HTTPS support.
 - Ensure that any credentials and parameters that can be changed are configurable using configuration files such as application.properties or web.xml.
+
+I have published a blog article ["Crafting Security into Web Applications — Safe Coding"](https://medium.com/@mguanuradha/crafting-security-into-web-applications-safe-coding-d8a72b4ad4d8), which includes security aspects considered, authentication protocols, implementation strategies, challenges faced, and the learning outcomes when developing the application. You can go through it for more details!
+
+
